@@ -9,7 +9,7 @@ const Content = ({parts}) => {
       {parts.map(part =>
         <Part key={part.id} part={part} />
       )}
-      <p>total of {sum} exercises</p>
+      <h3>total of {sum} exercises</h3>
     </>
   )
 }
