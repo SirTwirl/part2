@@ -1,3 +1,12 @@
+const Header = (props) => (
+  <h1>{props.name}</h1>
+)
+
+const Course = (props) => (
+  <Header name={props.course.name}/>
+)
+
+
 const App = () => {
   const course = {
     id: 1,
