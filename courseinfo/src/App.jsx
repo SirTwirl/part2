@@ -1,9 +1,25 @@
-const Header = (props) => (
-  <h1>{props.name}</h1>
+const Header = ({name}) => (
+  <h1>{name}</h1>
 )
 
-const Course = (props) => (
-  <Header name={props.course.name}/>
+const Content = ({parts}) => (
+  <>
+  {parts.map(part =>
+  <Part key={part.id} part={part} />
+  )}
+  </>
+)
+
+const Part = ({part}) => (
+  <p>{part.name} {part.exercises}</p>
+)
+
+const Course = ({course}) => (
+  <>
+  <Header name={course.name}/>
+  <Content parts={course.parts}/>
+  </>
+
 )
 
 
