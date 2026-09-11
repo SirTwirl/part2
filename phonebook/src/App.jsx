@@ -44,6 +44,16 @@ const App = () => {
     }
   }
 
+  const handleDelete = (id, name) => {
+    if(window.confirm(`Delete ${name} ?`)) {
+      personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+    }
+  }
+
   useEffect(() => {
     personService
     .getAll()
@@ -58,7 +68,7 @@ const App = () => {
       <Filter value={filter} onChange={handleFilterChange}/>
       <PersonForm newName={newName} newNumber={newNumber} onChangeName={handleNameChange} onChangeNumber={handleNumberChange} onSubmit={addPerson}/>
       <h2>Numbers</h2>
-      <Persons persons={personsToShow}/>
+      <Persons persons={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
 }
