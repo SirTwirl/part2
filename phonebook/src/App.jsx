@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [message, setMessage]= useState(null)
+  const [notificationType, setNotificationType] = useState(null)
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -42,6 +43,9 @@ const App = () => {
           setPersons(persons.map(p => p.id !== existingPerson.id ? p : returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationType(
+            'success'
+          )
           setMessage(
           `Edited ${returnedPerson.name}`
         )
@@ -49,6 +53,18 @@ const App = () => {
           setMessage(null)
         }, 5000)
         })
+        .catch(error => {
+        setNotificationType(
+            'error'
+        )
+        setMessage(
+          `Information of ${existingPerson.name} has already been removed from server`
+        )
+        setTimeout(() => {
+        setMessage(null)
+        }, 5000)
+        setPersons(persons.filter(p => p.id !== existingPerson.id))
+      })
     }
   } else {
     const nameObject = { name: newName, number: newNumber }
@@ -58,6 +74,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setNotificationType(
+            'success'
+        )
         setMessage(
           `Added ${nameObject.name}`
         )
@@ -74,6 +93,27 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(person => person.id !== id))
+        setNotificationType(
+            'success'
+        )
+        setMessage(
+          `Deleted ${name}`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+      .catch(error => {
+        setNotificationType(
+            'error'
+        )
+        setMessage(
+          `Information of ${name} has already been removed from server`
+        )
+        setTimeout(() => {
+        setMessage(null)
+        }, 5000)
+        setPersons(persons.filter(p => p.id !== id))
       })
     }
   }
@@ -89,7 +129,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type={notificationType}/>
       <Filter value={filter} onChange={handleFilterChange}/>
       <PersonForm newName={newName} newNumber={newNumber} onChangeName={handleNameChange} onChangeNumber={handleNumberChange} onSubmit={addPerson}/>
       <h2>Numbers</h2>
